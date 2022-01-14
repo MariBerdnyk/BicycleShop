@@ -1,0 +1,61 @@
+﻿@model IList<BicycleShop.Models.Bicycle>
+@{
+    ViewBag.Title = "Все велосипеды";
+}
+
+<h1>Awesome Bike Rental</h1>
+<h4>&#129297; Create a new rent</h4>
+
+<div class="createBike">
+    <form method="post">
+        <label>Bike name</label><label>Bike type</label><label id = "pricelabel">Price</label><br />
+        <input type = "text" name = "namebike" required="required"/>
+        <select id = "type" name = "type" asp-items = "ViewBag.TypeBicycles"></select>
+        <input type = "number" name = "price" placeholder="0.0" min="0" step="any" id = "price"/>
+        <input type = "submit" value = "Submit rent" class = "btn"/>
+    </form>
+</div>
+
+<h4>&#129321; Your rent (Total: @Model.Where(item => item.Status_bicycle).Sum(item => item.Price_bicycle))</h4>
+
+<div class="listbike">
+    @foreach (var item in Model)
+    {
+        if (item.Status_bicycle)
+        {
+            <div class="col">
+                <div class="bikeinfo">
+                    @item.Name_bicycle / @Html.DisplayFor(modelItem => item.Type.Name_type) / @item.Price_bicycle.ToString("c")
+                </div>
+                @Html.ActionLink("Cancel rent", "Edit", new { id = item.Id }, new { @class = "button_near"})
+            </div>
+        }
+    }
+</div>
+
+<h4>&#128690; Available bicycles (@Model.Count(n => !n.Status_bicycle))</h4>
+
+<div class="listbike">
+    @foreach (var item in Model)
+    {
+        if (!item.Status_bicycle)
+        {
+            <div class="col">
+                <div class="bikeinfo">
+                    @item.Name_bicycle / @Html.DisplayFor(modelItem => item.Type.Name_type) / @item.Price_bicycle.ToString("c")
+                </div>
+                <div class="container_but">
+                    @Html.ActionLink("Rent", "Edit", new { id = item.Id }, new { @class = "button_near_rent" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "button_near" })
+                </div>
+            </div>
+        }
+    }
+</div>
+
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2022 - BicycleShop
+    </div>
+</footer>
