@@ -42,7 +42,6 @@ namespace BicycleShop
             }
             app.UseHttpsRedirection();
 
-
             app.UseRouting();
 
             app.UseAuthorization();
